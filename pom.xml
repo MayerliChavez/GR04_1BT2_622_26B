@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.educacion</groupId>
-    <artifactId>estudiantes-app</artifactId>
+    <groupId>com.grupo04</groupId>
+    <artifactId>gr04-1bt2-622-26b-tareas</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
 
-    <name>Aplicación Web Gestión Estudiantes</name>
-    <description>Aplicación Web con Java, JSP, Servlets y ORM Hibernate</description>
+    <name>GR04_1BT2_622_26B - Sistema de Tareas</name>
+    <description>Aplicación Web con Java, Servlets, JSP y Hibernate ORM con SQL Server</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -50,18 +49,11 @@
             <version>3.1.0</version>
         </dependency>
 
-        <!-- MySQL Driver -->
+        <!-- SQL Server JDBC Driver -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.2.0</version>
-        </dependency>
-
-        <!-- H2 Database (para pruebas) -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.2.224</version>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.4.0.jre11</version>
         </dependency>
 
         <!-- Logging -->
@@ -95,7 +87,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
                 <configuration>
-                    <warName>estudiantes-app</warName>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
         </plugins>
