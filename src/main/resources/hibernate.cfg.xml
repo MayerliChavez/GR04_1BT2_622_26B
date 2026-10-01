@@ -7,28 +7,26 @@
     <session-factory>
         <!-- SQL Server JDBC Driver -->
         <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-        
+
         <!-- SQL Server Connection URL -->
-        <!-- Formato: jdbc:sqlserver://SERVIDOR:PUERTO;databaseName=BASE_DE_DATOS -->
-        <!-- Ejemplo local: jdbc:sqlserver://localhost:1433;databaseName=gestion_tareas -->
-        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=gestion_tareas</property>
-        
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=gestion_tareas;encrypt=false;trustServerCertificate=true;loginTimeout=30</property>
+
         <!-- Usuario SQL Server -->
         <property name="hibernate.connection.username">sa</property>
-        
+
         <!-- Contraseña SQL Server -->
-        <property name="hibernate.connection.password">YourPassword123</property>
+        <property name="hibernate.connection.password">MayerliBDD2026</property>
 
         <!-- Hibernate Dialect para SQL Server -->
         <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
-        
+
         <!-- Crear/actualizar tablas automáticamente -->
         <property name="hibernate.hbm2ddl.auto">update</property>
-        
+
         <!-- Mostrar SQL en consola -->
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
-        
+
         <!-- Pool de conexiones -->
         <property name="hibernate.connection.pool_size">10</property>
 
