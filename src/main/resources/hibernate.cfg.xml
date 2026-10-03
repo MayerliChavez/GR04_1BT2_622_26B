@@ -9,13 +9,13 @@
         <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
 
         <!-- SQL Server Connection URL -->
-        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=gestion_tareas;encrypt=false;trustServerCertificate=true;loginTimeout=30</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://127.0.0.1:1433;databaseName=gestion_tareas;encrypt=false;trustServerCertificate=true;loginTimeout=30</property>
 
         <!-- Usuario SQL Server -->
         <property name="hibernate.connection.username">sa</property>
 
         <!-- Contraseña SQL Server -->
-        <property name="hibernate.connection.password">MayerliBDD2026</property>
+        <property name="hibernate.connection.password">2026FIS</property>
 
         <!-- Hibernate Dialect para SQL Server -->
         <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
