@@ -33,7 +33,7 @@
         </div>
         
         <div class="footer">
-            <p>GR04_1BT2_622_26B | Tecnologías: Java + JSP + Servlets + Hibernate + SQL Server</p>
+            <p>GR06_1BT2_622_26B | Tecnologías: Java + JSP + Servlets + Hibernate + SQL Server</p>
         </div>
     </div>
 </body>
