@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.grupo04</groupId>
-    <artifactId>gr04-1bt2-622-26b-tareas</artifactId>
+    <groupId>com.grupo06</groupId>
+    <artifactId>gr06-1bt2-622-26b-tareas</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
 
-    <name>GR04_1BT2_622_26B - Sistema de Tareas</name>
+    <name>GR06_1BT2_622_26B - Sistema de Tareas</name>
     <description>Aplicación Web con Java, Servlets, JSP y Hibernate ORM con SQL Server</description>
 
     <properties>

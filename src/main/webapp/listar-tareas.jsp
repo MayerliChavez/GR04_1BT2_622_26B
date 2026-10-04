@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.grupo04.app.model.Tarea" %>
+<%@ page import="com.grupo06.app.model.Tarea" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>

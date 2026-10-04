@@ -58,13 +58,13 @@ Desde la carpeta del proyecto, ejecuta:
 mvn clean package
 ```
 
-Maven descargará las dependencias y generará el WAR en `target/gr04-1bt2-622-26b-tareas-1.0.0.war`. La compilación no requiere que SQL Server esté iniciado; la base de datos sí debe estar configurada para ejecutar la aplicación.
+Maven descargará las dependencias y generará el WAR en `target/gr06-1bt2-622-26b-tareas-1.0.0.war`. La compilación no requiere que SQL Server esté iniciado; la base de datos sí debe estar configurada para ejecutar la aplicación.
 
 ### 5. Desplegar en Tomcat
 Copia el WAR generado a la carpeta `webapps` de Tomcat e inicia o reinicia Tomcat. Luego abre:
 
 ```text
-http://localhost:8080/gr04-1bt2-622-26b-tareas-1.0.0/
+http://localhost:8080/gr06-1bt2-622-26b-tareas-1.0.0/
 ```
 
 Si Tomcat se ejecuta en otra computadora, reemplaza `localhost` en el navegador por la IP de la computadora donde está Tomcat. Asegúrate de que el firewall permita el puerto de Tomcat (por defecto, `8080`).
@@ -82,7 +82,7 @@ Si Tomcat se ejecuta en otra computadora, reemplaza `localhost` en el navegador 
 GR06_1BT2_622_26B/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/grupo04/app/
+│   │   ├── java/com/grupo06/app/
 │   │   │   ├── model/
 │   │   │   │   └── Tarea.java
 │   │   │   ├── dao/
@@ -112,7 +112,7 @@ GR06_1BT2_622_26B/
 ## Uso de la Aplicación
 
 ### Página Principal
-- Accede a `http://localhost:8080/gr04-1bt2-622-26b-tareas/`
+- Accede a `http://localhost:8080/gr06-1bt2-622-26b-tareas/`
 - Haz clic en "Ir al Gestor de Tareas"
 
 ### Crear una Tarea

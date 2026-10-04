@@ -31,6 +31,6 @@
         <property name="hibernate.connection.pool_size">10</property>
 
         <!-- Mapeo de entidades -->
-        <mapping class="com.grupo04.app.model.Tarea"/>
+        <mapping class="com.grupo06.app.model.Tarea"/>
     </session-factory>
 </hibernate-configuration>
