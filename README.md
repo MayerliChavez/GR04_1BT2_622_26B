@@ -20,46 +20,61 @@ Aplicación web desarrollada en Java con JSP, Servlets y Hibernate ORM para gest
 - SQL Server 2019 o superior
 - Tomcat 10 o servidor compatible con Jakarta EE
 
+## Instalación y ejecución
+
+### 1. Instalar las herramientas
+Instala un JDK 11 o superior, Maven 3.6+ y Apache Tomcat 10+. Para ejecutar la aplicación también necesitas SQL Server (por ejemplo, SQL Server Express) y SQL Server Management Studio (SSMS) para configurar la base de datos.
+
+Comprueba que Java y Maven estén disponibles desde una terminal:
+```bash
+java -version
+mvn -version
+```
+
+### 2. Descargar el proyecto
+Clona el repositorio con Git o descarga el proyecto como ZIP y extrae su contenido. Abre una terminal en la carpeta que contiene `pom.xml`.
+
+```bash
+git clone https://github.com/MayerliChavez/GR04_1BT2_622_26B.git
+cd GR04_1BT2_622_26B
+```
+
+### 3. Preparar SQL Server
+Inicia SQL Server y, desde SSMS, abre y ejecuta `database/schema.sql`. El script crea la base de datos `gestion_tareas`, la tabla `tareas` y registros de ejemplo. Ejecútalo solo en una instancia donde todavía no exista esa base de datos.
+
+La configuración incluida usa SQL Server en la misma computadora (`localhost`), puerto `1433` y autenticación de SQL Server. Si tu instalación usa otro servidor, puerto o usuario, edita `src/main/resources/hibernate.cfg.xml` y actualiza estas propiedades con tus propios valores:
+
+```xml
+<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=gestion_tareas;encrypt=false;trustServerCertificate=true;loginTimeout=30</property>
+<property name="hibernate.connection.username">TU_USUARIO</property>
+<property name="hibernate.connection.password">TU_CONTRASEÑA</property>
+```
+
+Si la base de datos está en otra computadora, sustituye `localhost` por el nombre o la dirección IP de esa computadora y confirma que SQL Server permita conexiones TCP/IP y conexiones entrantes por el puerto configurado. No publiques contraseñas reales en el repositorio.
+
+### 4. Compilar el proyecto
+Desde la carpeta del proyecto, ejecuta:
+```bash
+mvn clean package
+```
+
+Maven descargará las dependencias y generará el WAR en `target/gr04-1bt2-622-26b-tareas-1.0.0.war`. La compilación no requiere que SQL Server esté iniciado; la base de datos sí debe estar configurada para ejecutar la aplicación.
+
+### 5. Desplegar en Tomcat
+Copia el WAR generado a la carpeta `webapps` de Tomcat e inicia o reinicia Tomcat. Luego abre:
+
+```text
+http://localhost:8080/gr04-1bt2-622-26b-tareas-1.0.0/
+```
+
+Si Tomcat se ejecuta en otra computadora, reemplaza `localhost` en el navegador por la IP de la computadora donde está Tomcat. Asegúrate de que el firewall permita el puerto de Tomcat (por defecto, `8080`).
+
 ## Tecnologías Utilizadas
 - **Backend:** Java, Servlets, JSP
 - **ORM:** Hibernate (versión 6.4.0)
 - **Base de datos:** SQL Server
 - **Build:** Maven
 - **Frontend:** HTML5, CSS3, JavaScript
-
-## Configuración
-
-### 1. Crear la base de datos SQL Server
-Ejecutar el script SQL:
-```sql
-CREATE DATABASE gestion_tareas;
-```
-
-### 2. Configurar Hibernate
-Editar el archivo `src/main/resources/hibernate.cfg.xml`:
-
-```xml
-<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=gestion_tareas</property>
-<property name="hibernate.connection.username">sa</property>
-<property name="hibernate.connection.password">YourPassword123</property>
-```
-
-**Parámetros importantes:**
-- **hostname:** La dirección del servidor SQL Server (ej: localhost, 192.168.1.10, etc.)
-- **puerto:** Puerto de SQL Server (predeterminado: 1433)
-- **database:** Nombre de la base de datos (gestion_tareas)
-- **usuario:** Usuario de SQL Server (sa o tu usuario personalizado)
-- **contraseña:** Contraseña del usuario
-
-### 3. Compilar la aplicación
-```bash
-mvn clean package
-```
-
-### 4. Desplegar en Tomcat
-1. Copiar el archivo WAR generado en `target/gr04-1bt2-622-26b-tareas.war` a la carpeta `webapps` de Tomcat
-2. Iniciar Tomcat
-3. Acceder a: `http://localhost:8080/gr04-1bt2-622-26b-tareas/`
 
 ## Estructura del Proyecto
 
