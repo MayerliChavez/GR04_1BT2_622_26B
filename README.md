@@ -35,8 +35,8 @@ mvn -version
 Clona el repositorio con Git o descarga el proyecto como ZIP y extrae su contenido. Abre una terminal en la carpeta que contiene `pom.xml`.
 
 ```bash
-git clone https://github.com/MayerliChavez/GR04_1BT2_622_26B.git
-cd GR04_1BT2_622_26B
+git clone https://github.com/MayerliChavez/GR04_1BT2_622_26B.git GR06_1BT2_622_26B
+cd GR06_1BT2_622_26B
 ```
 
 ### 3. Preparar SQL Server
@@ -79,7 +79,7 @@ Si Tomcat se ejecuta en otra computadora, reemplaza `localhost` en el navegador 
 ## Estructura del Proyecto
 
 ```
-GR04_1BT2_622_26B/
+GR06_1BT2_622_26B/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/grupo04/app/
