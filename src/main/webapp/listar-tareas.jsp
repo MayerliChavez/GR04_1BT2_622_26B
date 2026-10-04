@@ -64,7 +64,7 @@
             </div>
             
             <div class="tarea-acciones">
-                <form method="GET" action="tareas" style="display:inline;">
+                <form method="POST" action="tareas" style="display:inline;">
                     <input type="hidden" name="action" value="completar">
                     <input type="hidden" name="id" value="<%= t.getId() %>">
                     <button type="submit" class="btn btn-small btn-check">
@@ -72,7 +72,11 @@
                     </button>
                 </form>
                 <a href="tareas?action=editar&id=<%= t.getId() %>" class="btn btn-small btn-edit">✎ Editar</a>
-                <a href="tareas?action=eliminar&id=<%= t.getId() %>" class="btn btn-small btn-delete" onclick="return confirm('¿Deseas eliminar esta tarea?');">✕ Eliminar</a>
+                <form method="POST" action="tareas" style="display:inline;" onsubmit="return confirm('¿Deseas eliminar esta tarea?');">
+                    <input type="hidden" name="action" value="eliminar">
+                    <input type="hidden" name="id" value="<%= t.getId() %>">
+                    <button type="submit" class="btn btn-small btn-delete">✕ Eliminar</button>
+                </form>
             </div>
         </div>
         <% 
