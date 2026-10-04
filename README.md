@@ -1,4 +1,4 @@
-# GR04_1BT2_622_26B - Sistema de Gestión de Tareas
+# GR06_1BT2_622_26B - Sistema de Gestión de Tareas
 
 ## Descripción
 Aplicación web desarrollada en Java con JSP, Servlets y Hibernate ORM para gestionar tareas. La aplicación permite crear, editar, eliminar y marcar tareas como completadas, con almacenamiento en SQL Server.
@@ -207,7 +207,7 @@ GitHub Copilot fue utilizado para:
 https://github.com/MayerliChavez/GR04_1BT2_622_26B
 
 ## Autor
-GR04_1BT2_622_26B
+GR06_1BT2_622_26B
 
 ## Licencia
 MIT License
