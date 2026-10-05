@@ -835,6 +835,59 @@ for ($i = 1; $i -le 12; $i++) {
     }
 }
 
+# ------------------------------------------------------------
+# SOPORTE OPCIONAL PARA RADMIN VPN
+# ------------------------------------------------------------
+
+$RadminAdapter = $null
+$RadminIPv4 = $null
+$RadminAdapters = @(Get-NetAdapter -ErrorAction SilentlyContinue | Where-Object { $_.Status -eq "Up" -and ($_.Name -match "Radmin" -or $_.InterfaceDescription -match "Radmin") })
+
+foreach ($Adapter in $RadminAdapters) {
+    $Address = Get-NetIPAddress -InterfaceIndex $Adapter.ifIndex -AddressFamily IPv4 -ErrorAction SilentlyContinue | Where-Object { $_.IPAddress -match '^26\.' -and $_.IPAddress -ne "26.0.0.1" } | Select-Object -First 1
+    if ($Address) {
+        $RadminAdapter = $Adapter
+        $RadminIPv4 = $Address.IPAddress
+        break
+    }
+}
+
+# Compatibilidad con adaptadores cuyo nombre no incluye "Radmin".
+if (-not $RadminIPv4) {
+    $Address = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue | Where-Object { $_.IPAddress -match '^26\.' -and $_.IPAddress -ne "26.0.0.1" } | Select-Object -First 1
+    if ($Address) {
+        $RadminAdapter = Get-NetAdapter -InterfaceIndex $Address.InterfaceIndex -ErrorAction SilentlyContinue
+        $RadminIPv4 = $Address.IPAddress
+    }
+}
+
+if ($RadminIPv4) {
+    Write-Host ""
+    Write-Host "Radmin VPN detectado:" -ForegroundColor Green
+    Write-Host "$($RadminAdapter.Name) - $RadminIPv4"
+
+    $FirewallRuleName = "Tomcat 8080 - Radmin VPN"
+    $FirewallRule = Get-NetFirewallRule -DisplayName $FirewallRuleName -ErrorAction SilentlyContinue | Select-Object -First 1
+
+    if (-not $FirewallRule) {
+        try {
+            New-NetFirewallRule -DisplayName $FirewallRuleName -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8080 -LocalAddress $RadminIPv4 -InterfaceAlias $RadminAdapter.Name -Profile Any -ErrorAction Stop | Out-Null
+            Write-Host "OK - Regla de Firewall creada para TCP 8080 en Radmin." -ForegroundColor Green
+        }
+        catch {
+            Write-Host "ADVERTENCIA - No se pudo crear la regla de Firewall." -ForegroundColor Yellow
+            Write-Host "Ejecuta PowerShell como administrador para permitir el acceso por Radmin."
+            Write-Host $_.Exception.Message -ForegroundColor DarkGray
+        }
+    }
+    else {
+        Write-Host "OK - Ya existe la regla de Firewall '$FirewallRuleName'." -ForegroundColor Green
+    }
+}
+else {
+    Write-Host ""
+    Write-Host "Radmin VPN no detectado; se omitio la regla de Firewall." -ForegroundColor Yellow
+}
 $ContextPath = "/" + $AppName
 
 Write-Host ""
@@ -855,8 +908,15 @@ else {
 }
 
 Write-Host ""
-Write-Host "Aplicacion:" -ForegroundColor Cyan
+Write-Host "Acceso local:" -ForegroundColor Cyan
 Write-Host "http://localhost:8080$ContextPath/"
+if ($RadminIPv4) {
+    Write-Host "Acceso por Radmin VPN:" -ForegroundColor Cyan
+    Write-Host ("http://" + $RadminIPv4 + ":8080$ContextPath/")
+}
+else {
+    Write-Host "Acceso por Radmin VPN: no disponible (adaptador no detectado)." -ForegroundColor Yellow
+}
 
 Write-Host ""
 Write-Host "WAR:" -ForegroundColor Cyan

@@ -1,213 +1,111 @@
 # GR06_1BT2_622_26B - Sistema de Gestión de Tareas
 
-## Descripción
-Aplicación web desarrollada en Java con JSP, Servlets y Hibernate ORM para gestionar tareas. La aplicación permite crear, editar, eliminar y marcar tareas como completadas, con almacenamiento en SQL Server.
+Aplicación web Java para crear, consultar, editar y eliminar tareas. Usa JSP, Servlets, Hibernate y SQL Server.
 
-## Características
-- ✅ Ver todas las tareas registradas
-- ✅ Crear nuevas tareas
-- ✅ Editar tareas existentes
-- ✅ Eliminar tareas
-- ✅ Marcar tareas como completadas/pendientes
-- ✅ Filtrar por estado (Todas, Pendientes, Completadas)
-- ✅ Fecha de creación y vencimiento
-- ✅ Estadísticas de tareas
-- ✅ Interfaz responsive y moderna
+## Requisitos
 
-## Requisitos del Sistema
-- Java JDK 11 o superior
-- Maven 3.6+
-- SQL Server 2019 o superior
-- Tomcat 10 o servidor compatible con Jakarta EE
+- Windows 10/11 con Windows PowerShell.
+- Windows Package Manager (winget), incluido en App Installer.
+- SQL Server instalado y en ejecución en la misma computadora, escuchando por TCP en 127.0.0.1:1433.
+- Una cuenta de SQL Server con permisos para crear la base de datos si todavía no existe. El instalador solicita las credenciales; por defecto propone el usuario sa.
+- Para acceso del equipo por Radmin VPN: Radmin VPN instalado y conectado a la misma red virtual que los demás integrantes.
 
-## Instalación y ejecución
+El script instala Eclipse Temurin JDK 25, Maven y Apache Tomcat 10.1.60 cuando no los encuentra. No es necesario instalar Tomcat manualmente.
 
-### 1. Instalar las herramientas
-Instala un JDK 11 o superior, Maven 3.6+ y Apache Tomcat 10+. Para ejecutar la aplicación también necesitas SQL Server (por ejemplo, SQL Server Express) y SQL Server Management Studio (SSMS) para configurar la base de datos.
+## Instalación automática
 
-Comprueba que Java y Maven estén disponibles desde una terminal:
-```bash
-java -version
-mvn -version
-```
+1. Descarga o clona el repositorio y abre Windows PowerShell en la carpeta del proyecto, donde están setup.ps1 y pom.xml.
+2. Confirma que SQL Server esté iniciado y configurado para aceptar conexiones TCP/IP por el puerto 1433. La autenticación de SQL Server debe estar habilitada para usar sa u otra cuenta SQL.
+3. Ejecuta el instalador:
 
-### 2. Descargar el proyecto
-Clona el repositorio con Git o descarga el proyecto como ZIP y extrae su contenido. Abre una terminal en la carpeta que contiene `pom.xml`.
+~~~powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup.ps1
+~~~
 
-```bash
-git clone https://github.com/MayerliChavez/GR04_1BT2_622_26B.git GR06_1BT2_622_26B
-cd GR06_1BT2_622_26B
-```
+El cambio de política se limita a esa ventana de PowerShell. Si Windows solicita permisos para instalar herramientas, acepta el aviso de winget.
 
-### 3. Preparar SQL Server
-Inicia SQL Server y, desde SSMS, abre y ejecuta `database/schema.sql`. El script crea la base de datos `gestion_tareas`, la tabla `tareas` y registros de ejemplo. Ejecútalo solo en una instancia donde todavía no exista esa base de datos.
+El instalador realiza estas etapas:
 
-La configuración incluida usa SQL Server en la misma computadora (`localhost`), puerto `1433` y autenticación de SQL Server. Si tu instalación usa otro servidor, puerto o usuario, edita `src/main/resources/hibernate.cfg.xml` y actualiza estas propiedades con tus propios valores:
+1. Comprueba Java, Maven y Tomcat; instala los componentes que falten.
+2. Comprueba SQL Server, solicita las credenciales y crea la base gestion_tareas desde database/schema.sql si no existe. Si la base ya existe, crea la tabla tareas solo cuando falta.
+3. Genera la configuración local de Hibernate en src/main/resources/hibernate.local.properties, compila el proyecto, copia el WAR a Tomcat e inicia el servidor.
 
-```xml
-<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=gestion_tareas;encrypt=false;trustServerCertificate=true;loginTimeout=30</property>
-<property name="hibernate.connection.username">TU_USUARIO</property>
-<property name="hibernate.connection.password">TU_CONTRASEÑA</property>
-```
+La configuración local de Hibernate contiene las credenciales de esa computadora y está excluida de Git. No agregues contraseñas reales a hibernate.cfg.xml ni las compartas en el repositorio.
 
-Si la base de datos está en otra computadora, sustituye `localhost` por el nombre o la dirección IP de esa computadora y confirma que SQL Server permita conexiones TCP/IP y conexiones entrantes por el puerto configurado. No publiques contraseñas reales en el repositorio.
+### Regla de Firewall
 
-### 4. Compilar el proyecto
-Desde la carpeta del proyecto, ejecuta:
-```bash
-mvn clean package
-```
+Al final, el instalador busca una interfaz de Radmin VPN activa y una dirección IPv4 26.x.x.x. Si encuentra una, crea la regla de entrada TCP para el puerto 8080 solo si todavía no existe una regla llamada Tomcat 8080 - Radmin VPN. La regla nueva se limita a la dirección y a la interfaz detectadas.
 
-Maven descargará las dependencias y generará el WAR en `target/gr06-1bt2-622-26b-tareas-1.0.0.war`. La compilación no requiere que SQL Server esté iniciado; la base de datos sí debe estar configurada para ejecutar la aplicación.
+Para crear la regla, ejecuta PowerShell como administrador. Si no tienes permisos elevados, el resto de la instalación puede completarse y el instalador mostrará una advertencia; puedes volver a ejecutar el script como administrador para crear la regla. Si Radmin no está conectado, el instalador omitirá la regla y podrás ejecutar el script cuando la VPN esté activa.
 
-### 5. Desplegar en Tomcat
-Copia el WAR generado a la carpeta `webapps` de Tomcat e inicia o reinicia Tomcat. Luego abre:
+## Acceso a la aplicación
 
-```text
+Al terminar, el instalador muestra la URL local y, cuando detecta Radmin, la URL para los integrantes conectados a la misma red VPN. El contexto se obtiene del nombre del WAR generado; normalmente será:
+
+~~~text
 http://localhost:8080/gr06-1bt2-622-26b-tareas-1.0.0/
-```
+http://IP_RADMIN:8080/gr06-1bt2-622-26b-tareas-1.0.0/
+~~~
 
-Si Tomcat se ejecuta en otra computadora, reemplaza `localhost` en el navegador por la IP de la computadora donde está Tomcat. Asegúrate de que el firewall permita el puerto de Tomcat (por defecto, `8080`).
+Usa las direcciones que imprima el instalador, porque el nombre del WAR o la IP de Radmin pueden cambiar. Mantén la computadora anfitriona encendida y Tomcat en ejecución mientras los demás usan la aplicación. Los demás integrantes no necesitan instalar Maven, Tomcat ni SQL Server para acceder desde el navegador.
 
-## Tecnologías Utilizadas
-- **Backend:** Java, Servlets, JSP
-- **ORM:** Hibernate (versión 6.4.0)
-- **Base de datos:** SQL Server
-- **Build:** Maven
-- **Frontend:** HTML5, CSS3, JavaScript
+## Instalación manual (alternativa)
 
-## Estructura del Proyecto
+Si no vas a usar setup.ps1, instala Java 11 o superior, Maven 3.6+, Tomcat 10+ y SQL Server. Ejecuta database/schema.sql en SQL Server, configura las credenciales locales para Hibernate, compila con mvn clean package y despliega el WAR resultante en Tomcat. El instalador automático es el método recomendado para este proyecto porque prepara esas configuraciones locales por ti.
 
-```
+## Tecnologías
+
+- Java, JSP y Jakarta Servlets
+- Hibernate ORM 6.4
+- Microsoft SQL Server
+- Maven
+- Apache Tomcat 10.1
+
+## Funcionalidades
+
+- Consultar tareas y filtrarlas por estado.
+- Crear, editar y eliminar tareas.
+- Marcar tareas como completadas o pendientes.
+- Registrar fechas de creación y vencimiento.
+
+## Estructura principal
+
+~~~text
 GR06_1BT2_622_26B/
-├── src/
-│   ├── main/
-│   │   ├── java/com/grupo06/app/
-│   │   │   ├── model/
-│   │   │   │   └── Tarea.java
-│   │   │   ├── dao/
-│   │   │   │   └── TareaDAO.java
-│   │   │   ├── servlet/
-│   │   │   │   └── TareaServlet.java
-│   │   │   └── util/
-│   │   │       └── HibernateUtil.java
-│   │   ├── resources/
-│   │   │   └── hibernate.cfg.xml
-│   │   └── webapp/
-│   │       ├── WEB-INF/
-│   │       │   └── web.xml
-│   │       ├── index.jsp
-│   │       ├── listar-tareas.jsp
-│   │       ├── form-tarea.jsp
-│   │       ├── editar-tarea.jsp
-│   │       └── css/
-│   │           └── estilo.css
-│   └── test/
 ├── database/
 │   └── schema.sql
+├── src/main/
+│   ├── java/com/grupo06/app/
+│   ├── resources/
+│   └── webapp/
+├── setup.ps1
 ├── pom.xml
 └── README.md
-```
+~~~
 
-## Uso de la Aplicación
+## Solución de problemas
 
-### Página Principal
-- Accede a `http://localhost:8080/gr06-1bt2-622-26b-tareas/`
-- Haz clic en "Ir al Gestor de Tareas"
+### El instalador informa que no encuentra winget
 
-### Crear una Tarea
-1. Haz clic en "+ Nueva Tarea"
-2. Completa el formulario:
-   - Título (requerido)
-   - Descripción (opcional)
-   - Fecha de vencimiento (opcional)
-3. Haz clic en "Guardar Tarea"
+Instala o actualiza App Installer desde Microsoft Store, cierra PowerShell, abre una ventana nueva y vuelve a ejecutar setup.ps1.
 
-### Editar una Tarea
-1. En la lista, haz clic en "✎ Editar" en la tarea que desees
-2. Modifica los campos
-3. Haz clic en "Actualizar Tarea"
+### No conecta con SQL Server en 127.0.0.1:1433
 
-### Completar/Desmarcar una Tarea
-1. Haz clic en "☑ Completar" o "◇ Desmarcar" en la tarea
-2. La tarea se actualizará al instante
+Verifica que el servicio de SQL Server esté iniciado, que TCP/IP esté habilitado para la instancia y que esta escuche en el puerto 1433. Comprueba también que la autenticación de SQL Server esté habilitada y que las credenciales ingresadas sean correctas.
 
-### Eliminar una Tarea
-1. Haz clic en "✕ Eliminar" en la tarea
-2. Confirma la eliminación
+### No se crea la regla del Firewall
 
-### Filtrar Tareas
-- **Todas:** Muestra todas las tareas
-- **Pendientes:** Solo tareas sin completar
-- **Completadas:** Solo tareas completadas
+Abre Windows PowerShell como administrador y vuelve a ejecutar setup.ps1 con Radmin conectado. El script informa el error si Windows rechaza la creación de la regla.
 
-## Entidad Tarea
+### Radmin no aparece o no se muestra la URL VPN
 
-```java
-@Entity
-@Table(name = "tareas")
-public class Tarea {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
-    @Column(nullable = false, length = 200)
-    private String titulo;
-    
-    @Column(columnDefinition = "TEXT")
-    private String descripcion;
-    
-    @Column(nullable = false)
-    private boolean completada = false;
-    
-    @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fechaCreacion;
-    
-    @Column(name = "fecha_vencimiento")
-    private LocalDateTime fechaVencimiento;
-}
-```
+Conecta Radmin VPN y confirma que su adaptador esté activo y tenga una dirección IPv4 26.x.x.x. Ejecuta de nuevo setup.ps1; la URL VPN se imprimirá cuando el adaptador sea detectado.
 
-## GitHub Copilot en el Desarrollo
+### La aplicación no responde en el puerto 8080
 
-GitHub Copilot fue utilizado para:
-- Generar la estructura del proyecto Maven
-- Crear las clases de entidad con anotaciones JPA
-- Desarrollar el DAO con operaciones CRUD
-- Generar el Servlet con lógica de negocio
-- Crear las páginas JSP con formularios y tablas
-- Diseñar los estilos CSS
-- Escribir configuraciones de Hibernate
-
-### Prompts útiles para Copilot:
-```
-"Crea un CRUD completo con Hibernate para una entidad Tarea"
-"Genera un Servlet en Java que maneje operaciones CRUD"
-"Crea una página JSP con tabla responsiva para listar tareas"
-"Diseña un CSS moderno para una aplicación de tareas"
-```
-
-## Solución de Problemas
-
-### Error: "Cannot connect to database"
-- Verificar que SQL Server esté corriendo
-- Verificar usuario y contraseña en `hibernate.cfg.xml`
-- Verificar que la base de datos existe
-- Verificar conectividad de red si es en otro servidor
-
-### Error: "ClassNotFoundException: com.microsoft.sqlserver.jdbc.SQLServerDriver"
-- Verificar que el driver SQL Server está en las dependencias de Maven
-- Ejecutar `mvn clean install`
-
-### Error: "The specified module could not be found"
-- Limpiar y recompilar: `mvn clean package`
-- Borrar carpeta `target` y compilar nuevamente
-
-## Enlace del Repositorio
-https://github.com/MayerliChavez/GR04_1BT2_622_26B
-
-## Autor
-GR06_1BT2_622_26B
+Revisa que Tomcat esté iniciado y consulta los registros en la carpeta logs de Tomcat, bajo %LOCALAPPDATA%\GR06_1BT2_622_26B\apache-tomcat-10.1.60. Para acceso por Radmin, confirma que el equipo cliente esté conectado a la misma red virtual y que la regla del Firewall exista.
 
 ## Licencia
-MIT License
+
+MIT License.
