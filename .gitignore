@@ -21,3 +21,17 @@ target/
 # Logs
 *.log
 logs/
+
+# Configuración local de Hibernate
+src/main/resources/hibernate.local.properties
+
+# Configuración local
+*.local.properties
+
+# Archivos generados por Maven
+target/
+
+# Archivos de IDE
+.idea/
+*.iml
+hibernate.local.properties
